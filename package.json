@@ -18,13 +18,15 @@
 		"count": "find s -path '*/_archive' -prune -o -name '*.ts' -exec wc -l {} +"
 	},
 	"dependencies": {
+		"@e280/authlocal": "^0.3.10",
 		"@e280/kv": "^0.2.6",
-		"@e280/renraku": "0.6.0-12",
+		"@e280/renraku": "^0.6.0-22",
 		"@e280/stz": "^0.4.15"
 	},
 	"devDependencies": {
 		"@e280/octo": "^0.1.7",
 		"@e280/science": "^0.1.14",
+		"@types/node": "^26.6.6",
 		"typescript": "^7.0.2"
 	},
 	"author": "Chase Moskal <chasemoskal@gmail.com>",

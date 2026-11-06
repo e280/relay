@@ -1,4 +1,4 @@
 
 # 🛰 relay
-> *the blind watchmaker*
+> *blind byte exchange.*
 
