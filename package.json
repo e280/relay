@@ -1,0 +1,42 @@
+{
+	"private": true,
+	"name": "@e280/relay",
+	"version": "0.1.11",
+	"description": "the blind watchmaker",
+	"license": "MIT",
+	"type": "module",
+	"main": "./x/index.js",
+	"files": [
+		"x",
+		"s"
+	],
+	"scripts": {
+		"start": "node x/server.js",
+		"build": "rm -rf x && mkdir x && tsc",
+		"dev": "octo 'tsc -w' 'node --watch x/test.js'",
+		"test": "node x/test.js",
+		"count": "find s -path '*/_archive' -prune -o -name '*.ts' -exec wc -l {} +"
+	},
+	"dependencies": {
+		"@e280/kv": "^0.2.6",
+		"@e280/renraku": "0.6.0-12",
+		"@e280/stz": "^0.4.15"
+	},
+	"devDependencies": {
+		"@e280/octo": "^0.1.7",
+		"@e280/science": "^0.1.14",
+		"typescript": "^7.0.2"
+	},
+	"author": "Chase Moskal <chasemoskal@gmail.com>",
+	"homepage": "https://github.com/e280/relay#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/e280/relay.git"
+	},
+	"bugs": {
+		"url": "https://github.com/e280/relay/issues"
+	},
+	"keywords": [
+		"relay"
+	]
+}

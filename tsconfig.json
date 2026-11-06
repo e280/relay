@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"rootDir": "s",
+		"outDir": "x",
+		"target": "es2024",
+		"lib": ["es2024", "dom"],
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"sourceMap": true,
+		"declaration": true,
+		"skipLibCheck": true
+	},
+	"include": [
+		"s/**/*.ts",
+		"s/**/*.js"
+	],
+	"exclude": [
+		"s/**/_*",
+		"assets/**/*"
+	]
+}
