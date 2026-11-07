@@ -1,22 +1,25 @@
 
+import {Kv} from "@e280/kv"
 import {createServer} from "node:http"
 import {disposer, pubby} from "@e280/stz"
 import {websockets} from "@e280/renraku/node"
 import {wire, connect, Messenger, makeEndpoint} from "@e280/renraku"
 
+import {makeData} from "./lib/server/data.js"
 import {ClientApi} from "./lib/client/api.js"
 import {makeServerApi} from "./lib/server/api.js"
-import {Agent, App} from "./lib/server/types.js"
-import {Base64, Id} from "./lib/common/types.js"
+import {Agent, App, Post} from "./lib/server/types.js"
 
-const app: App = {members: new Map()}
+const app: App = {
+	subscriptions: new Map(),
+	data: makeData(new Kv()),
+}
 
 createServer().on("upgrade", websockets(async websocket => {
-	const sendToClientside = pubby<[from: Id, message: Base64]>()
+	const sendToClient = pubby<[post: Post]>()
 	const agent: Agent = {
-		id: undefined,
 		dispose: disposer(),
-		sendToClientside,
+		sendToClient,
 	}
 
 	const connection = await connect(websocket)
@@ -24,8 +27,8 @@ createServer().on("upgrade", websockets(async websocket => {
 	const messenger = new Messenger<ClientApi>(endpoint)
 	wire({connection, messenger})
 
-	const stopRelaying = sendToClientside.on(
-		(from, message) => messenger.remote.message(from, message)
+	const stopRelaying = sendToClient.on(
+		post => messenger.remote.post(post)
 	)
 
 	connection.onClose(() => {

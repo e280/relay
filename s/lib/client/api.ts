@@ -1,13 +1,12 @@
 
-import {Base64, Id} from "../common/types.js"
+import {Post} from "../server/types.js"
 
 export type ClientApi = ReturnType<typeof makeClientApi>
 
 export const makeClientApi = () => ({
-	async message(from: Id, message: Base64) {
+	async post(post: Post) {
 		// TODO:
-		void from
-		void message
+		void post
 	}
 })
 

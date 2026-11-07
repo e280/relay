@@ -1,19 +1,50 @@
 
-import {Disposer, Subby} from "@e280/stz"
-import {Base64, Id} from "../common/types.js"
+import {Cell, Kv} from "@e280/kv"
+import {Disposer, Lane, Pubby} from "@e280/stz"
 
-export type Member = {
-	id: Id
-	onMessage: Subby<[from: Id, message: Base64]>
-}
+export type AccessToken = string
+
+export type ChannelId = string
+export type Message = string
+export type PostId = string
+export type PostKey = string
 
 export type App = {
-	members: Map<Id, Member>
+	subscriptions: Map<ChannelId, Pubby<[post: Post]>>
+	data: Data
 }
 
 export type Agent = {
+	sendToClient: (post: Post) => void
 	dispose: Disposer
-	id: Id | undefined
-	sendToClientside: (from: Id, message: Base64) => void
+}
+
+export const postKey = (n: number) => n.toString().padStart(16, "0")
+
+export type PostParams = {
+	channelId: ChannelId
+	message: Message
+	lifespan: number
+}
+
+export type Post = {
+	id: PostId
+	message: Message
+}
+
+export type PostData = {
+	id: PostId
+	channelId: ChannelId
+	message: Message
+	expiresAt: number
+}
+
+export type Data = {
+	mutex: Lane
+	root: Kv
+	next: Cell<number>
+	posts: Kv<PostData>
+	indexPostKeysByIds: Kv<PostKey>
+	indexPostKeysByChannel: (channelId: ChannelId) => Kv<true>
 }
 

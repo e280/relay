@@ -1,27 +1,21 @@
 
 import {asFns} from "@e280/renraku"
-import {got, guarantee, subby} from "@e280/stz"
-import {Base64, Id} from "../common/types.js"
-import {Agent, App, Member} from "./types.js"
-import {verifyAccessToken} from "./utils/verify-access-token.js"
+import {AccessToken, Agent, App, ChannelId, PostId, PostParams} from "./types.js"
 
 export type ServerApi = ReturnType<typeof makeServerApi>
 
 export const makeServerApi = (app: App, agent: Agent) => asFns({
-	async connect(token: string) {
-		const {id} = await verifyAccessToken(token)
-		agent.id = id
-		const member = guarantee(app.members, id, () => (<Member>{id, onMessage: subby()}))
-		agent.dispose.schedule(
-			member.onMessage(agent.sendToClientside)
-		)
-	},
 
-	async send(to: Id, message: Base64) {
-		const from = got(agent.id)
-		const recipient = app.members.get(to)
-		if (recipient)
-			recipient.onMessage.publish(from, message)
-	},
+	/** post a message to a channel. */
+	async publish(post: PostParams) {},
+
+	/** fetch posts for a channel. */
+	async getPosts(accessToken: AccessToken, query: {channelId: ChannelId, cursor?: PostId}) {},
+
+	/** listen for new messages on a channel. */
+	async subscribe(channelId: ChannelId) {},
+
+	/** stop listening. */
+	async unsubscribe(channelId: ChannelId) {},
 })
 
